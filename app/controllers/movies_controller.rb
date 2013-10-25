@@ -1,6 +1,12 @@
 class MoviesController < ApplicationController
   def index
-    @movies = Movie.all
+    if (params.has_key?("criteria"))
+      criteria = params[:criteria]
+      @movies = Movie.order(criteria)
+      @order = criteria
+    else
+      @movies = Movie.all     
+    end
   end
   def show
     id = params[:id]
