@@ -1,11 +1,11 @@
 class MoviesController < ApplicationController
   def index
-    @all_ratings = Movie.all_ratings
+    @all_ratings = @keys = Movie.all_ratings
     @movies = Movie.all
     
     if (params.has_key?(:ratings))
-      keys = params[:ratings].keys
-      @movies = Movie.where(rating: keys)      
+      @keys = params[:ratings].keys
+      @movies = Movie.where(rating: @keys)      
     end
     
     if (params.has_key?("criteria"))
