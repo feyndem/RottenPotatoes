@@ -1,19 +1,42 @@
 class MoviesController < ApplicationController
   def index
     @all_ratings = @keys = Movie.all_ratings
-    @movies = Movie.all
+    if (params.has_key?(:criteria) && params.has_key?(:ratings))
+      @keys = params[:ratings].keys 
+      @movies = @movies = Movie.where(rating: @keys).order(params[:criteria])
+    elsif (params.empty? && ! session.has_key?(:criteria) && ! session.has_key?(:ratings))
+      @movies = Movie.all
+    else
+      params[:criteria] = session[:criteria] unless params.has_key?(:criteria)
+      params[:ratings] = session[:ratings] unless params.has_key?(:ratings)
+      session[:criteria] = params[:criteria]
+      session[:ratings] = params[:ratings]
+      redirect_to movies_path(:criteria => params[:criteria], :ratings => params[:ratings])
+    end 
+    @order = params[:criteria]
     
-    if (params.has_key?(:ratings))
-      @keys = params[:ratings].keys
-      @movies = Movie.where(rating: @keys)      
-    end
-    
-    if (params.has_key?("criteria"))
-      criteria = params[:criteria]
-      @movies = Movie.order(criteria)
-      @order = criteria     
-    end
-    
+#    if (params.has_key?(:ratings))
+#      @keys = params[:ratings].keys
+#      session[:ratings] = params[:ratings]
+#      if (session.has_key?(:criteria))
+#        params[:criteria] = session[:criteria]
+#        @movies = Movie.where(rating: @keys).order(session[:criteria])
+#      else
+#        @movies = Movie.where(rating: @keys)
+#      end
+#    end
+#    
+#    if (params.has_key?("criteria"))
+#      criteria = params[:criteria]
+#      session[:criteria] = params[:criteria]
+#      if (session.has_key?(:ratings))
+#        @keys = session[:ratings].keys
+#        @movies = Movie.where(rating: @keys).order(session[:criteria])
+#      else
+#        @movies = Movie.order(criteria)
+#      end
+#      @order = criteria    
+#    end  
   end
   
   def show
