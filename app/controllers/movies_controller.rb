@@ -14,29 +14,6 @@ class MoviesController < ApplicationController
       redirect_to movies_path(:criteria => params[:criteria], :ratings => params[:ratings])
     end 
     @order = params[:criteria]
-    
-#    if (params.has_key?(:ratings))
-#      @keys = params[:ratings].keys
-#      session[:ratings] = params[:ratings]
-#      if (session.has_key?(:criteria))
-#        params[:criteria] = session[:criteria]
-#        @movies = Movie.where(rating: @keys).order(session[:criteria])
-#      else
-#        @movies = Movie.where(rating: @keys)
-#      end
-#    end
-#    
-#    if (params.has_key?("criteria"))
-#      criteria = params[:criteria]
-#      session[:criteria] = params[:criteria]
-#      if (session.has_key?(:ratings))
-#        @keys = session[:ratings].keys
-#        @movies = Movie.where(rating: @keys).order(session[:criteria])
-#      else
-#        @movies = Movie.order(criteria)
-#      end
-#      @order = criteria    
-#    end  
   end
   
   def show
